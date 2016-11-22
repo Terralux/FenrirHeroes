@@ -1,0 +1,40 @@
+# =============== #
+# Unity generated #
+# =============== #
+FenrirHeroes/[Tt]emp/
+FenrirHeroes/[Oo]bj/
+FenrirHeroes/[Bb]uilds/
+FenrirHeroes/[Ll]ibrary/
+FenrirHeroes/[Ll]ibrary_ANDROID/
+FenrirHeroes/[Ll]ibrary_PC/
+FenrirHeroes/[Ll]ibrary_IOS/
+FenrirHeroes/sysinfo.txt
+FenrirHeroes/UnityVS/
+FenrirHeroes/UnityVS.meta
+FenrirHeroes/LightingData*
+FenrirHeroes/ReflectionProbe*
+
+# ===================================== #
+# Visual Studio / MonoDevelop generated #
+# ===================================== #
+FenrirHeroes/[Ee]xported[Oo]bj/
+FenrirHeroes/*.userprefs
+FenrirHeroes/*.csproj
+FenrirHeroes/*.pidb
+FenrirHeroes/*.suo
+FenrirHeroes/*.sln*
+FenrirHeroes/*.user
+FenrirHeroes/*.unityproj
+FenrirHeroes/*.booproj
+
+# ============
+# OS generated
+# ============
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Thumbs.db.meta
