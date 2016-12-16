@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SceneManager : MonoBehaviour {
+public class SceneMaster : MonoBehaviour {
 
 	private string BuilderSceneID = "LevelBuilder";
 	private string SessionSceneID = "GameSession";
