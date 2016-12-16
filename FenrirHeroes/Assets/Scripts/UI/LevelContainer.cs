@@ -12,9 +12,9 @@ public class LevelContainer : MonoBehaviour {
 		transform.SetParent (null);
 		DontDestroyOnLoad (gameObject);
 		if (isLevelBuilderLoader) {
-			Toolbox.FindComponent<SceneManager> ().LoadBuilderScene ();
+			Toolbox.FindComponent<SceneMaster> ().LoadBuilderScene ();
 		} else {
-			Toolbox.FindComponent<SceneManager> ().LoadSessionScene ();
+			Toolbox.FindComponent<SceneMaster> ().LoadSessionScene ();
 		}
 	}
 

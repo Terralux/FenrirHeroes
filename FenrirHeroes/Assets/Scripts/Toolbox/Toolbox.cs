@@ -25,8 +25,8 @@ public class Toolbox : Singleton<Toolbox>
 		var levelManager = this.GetOrAddComponent<LevelDataManager>();
 		RegisterComponent<LevelDataManager>(levelManager);
 
-		var sceneManager = this.GetOrAddComponent<SceneManager> ();
-		RegisterComponent<SceneManager> (sceneManager);
+		var sceneManager = this.GetOrAddComponent<SceneMaster> ();
+		RegisterComponent<SceneMaster> (sceneManager);
     }
 
     void OnApplicationQuit()

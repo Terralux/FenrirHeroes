@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Personal Scenes/Chromecast Test Scene.unity
+    path: Assets/Scenes/Chromecast Test Scene.unity
   - enabled: 1
-    path: Assets/Scenes/Personal Scenes/LevelBuilder.unity
+    path: Assets/Scenes/GameSession.unity
   - enabled: 1
-    path: Assets/Scenes/Personal Scenes/GameSession.unity
+    path: Assets/Scenes/LevelBuilder.unity
