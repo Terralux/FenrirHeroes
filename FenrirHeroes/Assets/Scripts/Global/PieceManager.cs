@@ -17,15 +17,17 @@ public class PieceManager : MonoBehaviour {
 	void Awake(){
 		Toolbox.RegisterComponent<PieceManager> (this);
 
-		int count = 0;
-		foreach (TileData td in tileData.tileData) {
-			GameObject go = Instantiate (pieceButtonPrefab, tilePiecePanel.transform) as GameObject;
-			go.GetComponentInChildren<Text> ().text = td.graphicsObject.name;
-			DragableLevelPiece dlp = go.GetComponent<DragableLevelPiece> ();
-			dlp.myPrefab = td.graphicsObject;
-			dlp.ID = count;
-			dlp.ObjectType = ObjectTypes.TILE;
-			count++;
+		if (tilePiecePanel != null) {
+			int count = 0;
+			foreach (TileData td in tileData.tileData) {
+				GameObject go = Instantiate (pieceButtonPrefab, tilePiecePanel.transform) as GameObject;
+				go.GetComponentInChildren<Text> ().text = td.graphicsObject.name;
+				DragableLevelPiece dlp = go.GetComponent<DragableLevelPiece> ();
+				dlp.myPrefab = td.graphicsObject;
+				dlp.ID = count;
+				dlp.ObjectType = ObjectTypes.TILE;
+				count++;
+			}
 		}
 	}
 

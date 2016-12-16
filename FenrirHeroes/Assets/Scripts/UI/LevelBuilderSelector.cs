@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class LevelSelector : MonoBehaviour {
+public class LevelBuilderSelector : MonoBehaviour {
 
 	private List<Level> levels = new List<Level>();
 	public GameObject LevelButtonPrefab;
@@ -35,6 +35,7 @@ public class LevelSelector : MonoBehaviour {
 	private void CreateNewLevelButton(Level l){
 		GameObject tempGO = Instantiate (LevelButtonPrefab, transform) as GameObject;
 		tempGO.GetComponent<LevelContainer> ().myLevel = l;
+		tempGO.GetComponent<LevelContainer> ().isLevelBuilderLoader = true;
 		tempGO.GetComponentInChildren<UnityEngine.UI.Text> ().text = l.name;
 	}
 }

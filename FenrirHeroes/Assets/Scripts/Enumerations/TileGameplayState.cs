@@ -1,0 +1,8 @@
+﻿public enum TileGameplayState {
+	PASSABLE,
+	IMPASSABLE,
+	OCCUPIED,
+	TRAPPED,
+	COVER,
+	INTERACTIVE
+}

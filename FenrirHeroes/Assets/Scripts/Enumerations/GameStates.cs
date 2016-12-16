@@ -1,15 +1,11 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public class GameStates : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+﻿public enum GameStates {
+	Intro,
+	PlayerTurn,
+	EnemyTurn,
+	PlayersLose,
+	PlayersWin,
+	GMTurn,
+	GMBuildPhase,
+	GMInterventionPhase,
+	ExecutingQueuedActions
 }

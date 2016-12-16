@@ -9,3 +9,5 @@ EditorBuildSettings:
     path: Assets/Scenes/Personal Scenes/Chromecast Test Scene.unity
   - enabled: 1
     path: Assets/Scenes/Personal Scenes/LevelBuilder.unity
+  - enabled: 1
+    path: Assets/Scenes/Personal Scenes/GameSession.unity

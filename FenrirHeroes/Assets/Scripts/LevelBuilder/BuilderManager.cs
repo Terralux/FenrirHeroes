@@ -1,18 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BuilderManager : MonoBehaviour {
+public class BuilderManager : LevelLoader {
 
 	private int floorIndex = 0;
 
-	private GameObject[,] templateTileObjects = new GameObject[20, 20];
-	private GameObject[,,] tileObjects = new GameObject[20, 20, 20];
-
 	public GameObject templateTile;
-
-	private Level currentLevel;
-
-	private PieceManager pm;
 
 	void Awake(){
 		Toolbox.RegisterComponent<BuilderManager> (this);
@@ -132,34 +125,11 @@ public class BuilderManager : MonoBehaviour {
 		SaveLevel ();
 	}
 
-	public void SetLevel(Level selectedLevel) {
+	public new void SetLevel(Level selectedLevel) {
 		currentLevel = selectedLevel;
 		InstantiateBuildingField ();
 		InstantiateLevelTiles ();
 		MoveDownAFloor ();
-	}
-
-	public void InstantiateLevelTiles() {
-
-		if (pm == null) {
-			pm = Toolbox.FindComponent<PieceManager> ();
-		}
-
-		for (int z = 0; z < 20; z++) {
-			for (int y = 0; y < 20; y++) {
-				for (int x = 0; x < 20; x++) {
-					if (currentLevel.tiles [x, y, z] != null) {
-						GameObject tempGO = pm.GetPiece (currentLevel.tiles [x, y, z].TileGraphicID, ObjectTypes.TILE);
-						tileObjects[x,y,z] = Instantiate(tempGO, new Vector3(x, y, z), tempGO.transform.rotation) as GameObject;
-
-						if (currentLevel.tiles [x, y, z].myStructure != null) {
-							tempGO = pm.GetPiece (currentLevel.tiles [x, y, z].myStructure.GraphicsID, ObjectTypes.OBSTACLE);
-							(Instantiate(tempGO, new Vector3(x, y, z), tempGO.transform.rotation) as GameObject).transform.SetParent(tileObjects[x,y,z].transform);
-						}
-					}
-				}
-			}
-		}
 	}
 
 	public void ClearLevelData(){
