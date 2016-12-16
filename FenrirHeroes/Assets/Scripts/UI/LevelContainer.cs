@@ -5,14 +5,24 @@ public class LevelContainer : MonoBehaviour {
 
 	[HideInInspector]
 	public Level myLevel;
+	[HideInInspector]
+	public bool isLevelBuilderLoader = true;
 
 	public void OnSelected(){
 		transform.SetParent (null);
 		DontDestroyOnLoad (gameObject);
-		Toolbox.FindComponent<SceneManager> ().LoadBuilderScene ();
+		if (isLevelBuilderLoader) {
+			Toolbox.FindComponent<SceneManager> ().LoadBuilderScene ();
+		} else {
+			Toolbox.FindComponent<SceneManager> ().LoadSessionScene ();
+		}
 	}
 
 	void OnLevelWasLoaded(){
-		Toolbox.FindComponent<BuilderManager> ().SetLevel (myLevel);
+		if (isLevelBuilderLoader) {
+			Toolbox.FindComponent<BuilderManager> ().SetLevel (myLevel);
+		} else {
+			Toolbox.FindComponent<LevelLoader> ().SetLevel (myLevel);
+		}
 	}
 }
