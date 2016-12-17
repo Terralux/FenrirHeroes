@@ -104,7 +104,6 @@ public class BuilderManager : LevelLoader {
 	}
 
 	public void SaveLevel(){
-		Debug.Log ("Saved Tile changes");
 		Toolbox.FindComponent<LevelDataManager> ().Save (currentLevel);
 	}
 

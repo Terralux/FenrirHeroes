@@ -27,6 +27,12 @@ public class Toolbox : Singleton<Toolbox>
 
 		var sceneManager = this.GetOrAddComponent<SceneMaster> ();
 		RegisterComponent<SceneMaster> (sceneManager);
+
+		var eventManager = this.GetOrAddComponent<EventManager> ();
+		RegisterComponent<EventManager> (eventManager);
+
+		var networkInputHandler = this.GetOrAddComponent<NetworkInputHandler>();
+		RegisterComponent<NetworkInputHandler> (networkInputHandler);
     }
 
     void OnApplicationQuit()

@@ -21,7 +21,6 @@ public class DragableLevelPiece : MonoBehaviour, IPointerDownHandler, IPointerUp
 	{
 		if (eventData.pointerCurrentRaycast.gameObject == gameObject) {
 			targetStructure = gameObject;
-			Debug.Log ("I got pointed at " + gameObject.name);
 		}
 	}
 
@@ -33,7 +32,6 @@ public class DragableLevelPiece : MonoBehaviour, IPointerDownHandler, IPointerUp
 	{
 		if (targetStructure == gameObject) {
 			if (instantiatedObject == null) {
-				Debug.Log ("Time to instantiate " + myPrefab.name);
 				instantiatedObject = Instantiate (myPrefab, new Vector3 (-1000, 0, -1000), myPrefab.transform.rotation) as GameObject;
 			}
 		}

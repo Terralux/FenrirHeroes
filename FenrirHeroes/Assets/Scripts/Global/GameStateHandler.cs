@@ -12,6 +12,7 @@ public class GameStateHandler : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		Toolbox.RegisterComponent<GameStateHandler> (this);
+		Toolbox.FindComponent<EventManager> ().OnLevelWasLoaded += StartPlayerTurn;
 	}
 
 	public void StartPlayerTurn() {
