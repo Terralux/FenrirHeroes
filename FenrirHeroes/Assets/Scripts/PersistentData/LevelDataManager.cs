@@ -52,7 +52,6 @@ public class LevelDataManager : MonoBehaviour {
 
 		foreach(string fileName in Directory.GetFiles(Application.persistentDataPath + "/Levels/", "*.dat")){
 			BinaryFormatter bf = new BinaryFormatter ();
-			Debug.Log (fileName);
 			FileStream file = File.Open (fileName, FileMode.Open);
 			levels.Add((Level) bf.Deserialize (file));
 			file.Close ();

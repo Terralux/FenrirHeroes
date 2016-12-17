@@ -29,4 +29,5 @@ MonoBehaviour:
   - OnAwakeRPC
   - PlayersJoined
   - receiveDirection
+  - ReceiveDirection
   DisableAutoOpenWizard: 1

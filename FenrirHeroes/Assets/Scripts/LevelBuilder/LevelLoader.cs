@@ -20,7 +20,7 @@ public class LevelLoader : MonoBehaviour {
 		currentLevel = selectedLevel;
 
 		InstantiateLevelTiles ();
-		Toolbox.FindComponent<GameStateHandler> ().StartPlayerTurn();
+		Toolbox.FindComponent<EventManager> ().OnLevelWasLoaded ();
 	}
 
 	protected void InstantiateLevelTiles() {
@@ -65,14 +65,17 @@ public class LevelLoader : MonoBehaviour {
 							(Instantiate (tempGO, new Vector3 (x, y, z), tempGO.transform.rotation) as GameObject).transform.SetParent (tileObjects [x, y, z].transform);
 							bto.currentGameState = TileGameplayState.IMPASSABLE;
 						} else {
-							if (!hasFoundFirstTile) {
-								GameObject tempPlayer = Instantiate (playerPrefab, new Vector3 (x, y, z), playerPrefab.transform.rotation) as GameObject; 
-								tempPlayer.transform.SetParent(tileObjects [x, y, z].transform);
-								tempPlayer.AddComponent<PlayerInputHandler> ();
-								bto.myPlayer = tempPlayer.AddComponent<Player> ();
-								hasFoundFirstTile = true;
-							}
 							bto.currentGameState = TileGameplayState.PASSABLE;
+						}
+
+						if(!hasFoundFirstTile) {
+						//if (currentLevel.tiles [x, y, z].isAPlayerStartTile) {
+							GameObject tempPlayer = Instantiate (playerPrefab, new Vector3 (x, y, z), playerPrefab.transform.rotation) as GameObject; 
+							tempPlayer.transform.SetParent(tileObjects [x, y, z].transform);
+							tempPlayer.AddComponent<PlayerInputHandler> ();
+							bto.myPlayer = tempPlayer.AddComponent<Player> ();
+							tempPlayer.AddComponent<NetworkEntity> ();
+							hasFoundFirstTile = true;
 						}
 					}
 				}
