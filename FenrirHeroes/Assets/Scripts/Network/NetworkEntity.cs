@@ -6,6 +6,7 @@ public class NetworkEntity : MonoBehaviour {
 
 	public string deviceID;
 	public int playerID;
+	public bool playerReady = false;
 
 	static int totalNetworkEntities = 0;
 
