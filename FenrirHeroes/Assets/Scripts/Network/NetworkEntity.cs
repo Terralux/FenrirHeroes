@@ -25,5 +25,9 @@ public class NetworkEntity : MonoBehaviour {
 		Toolbox.FindComponent<NetworkInputHandler> ().AddEntity (this);
 		inputHandler = GetComponent<PlayerInputHandler> ();
 	}
+		
+	public void MoveInDirection(TileDirections direction){
+		inputHandler.MoveInDirection (direction, myPlayer.getStats ().stats [4].getStat ());
+	}
 
 }
