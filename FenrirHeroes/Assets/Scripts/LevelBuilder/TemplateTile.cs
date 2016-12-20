@@ -33,9 +33,8 @@ public class TemplateTile : MonoBehaviour {
 	}
 
 	public void TransferTileData(TemplateTile tempTile){
-		Debug.Log ("This is where the error occurs!");
+		
 		if (this != tempTile) {
-			//tempTile.myTile = myTile;
 			tempTile.myTile = new Tile (myTile.TileGraphicID, (int)tempTile.transform.position.x, (int)tempTile.transform.position.z);
 
 			tempTile.tile = tile;
@@ -53,7 +52,10 @@ public class TemplateTile : MonoBehaviour {
 
 			BM.UpdateTileGraphics (tempTile.tile);
 			BM.UpdateTile (tempTile.myTile);
-			RemoveTile ();
+
+			if (tempTile.transform.childCount == 0) {
+				RemoveTile ();
+			}
 			tile = null;
 			structure = null;
 			creature = null;
@@ -156,5 +158,15 @@ public class TemplateTile : MonoBehaviour {
 		if (myTile != null) {
 			myTile = null;
 		}
+	}
+
+	public Tile GetTile(){
+		return myTile;
+	}
+
+	public void SwitchStartTileOption(){
+		myTile.isAPlayerStartTile = !myTile.isAPlayerStartTile;
+		BM.UpdateTileGraphics (tile);
+		BM.UpdateTile (myTile);
 	}
 }
