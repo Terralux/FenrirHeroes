@@ -14,6 +14,7 @@ public class PlayerInputHandler : MonoBehaviour {
 		Toolbox.FindComponent<GameStateHandler> ().EnableInputHandlers += TurnOn;
 		Toolbox.FindComponent<GameStateHandler> ().DisableInputHandlers += TurnOff;
 
+
 		currentBTOTarget = transform.parent.GetComponent<BaseTileObject> ();
 	}
 
@@ -31,12 +32,15 @@ public class PlayerInputHandler : MonoBehaviour {
 			if (Input.GetKeyDown (KeyCode.S)) {
 				MoveInDirection (TileDirections.DownLeft);
 			}
-
-			if (Input.GetKeyDown (KeyCode.Space)) {
+				
+			// Need to find another way to call this, cause it only works if i give it a trigger!
+			if (Toolbox.FindComponent<NetworkInputHandler> ().allPlayersReadyBool == true) {
 				StartCoroutine (ExecuteActions ());
+				Toolbox.FindComponent<NetworkInputHandler> ().allPlayersReadyBool = false;
 			}
 		}
 	}
+		
 
 	public void MoveInDirection(TileDirections currentDirection){
 		Debug.Log ("I moved!");

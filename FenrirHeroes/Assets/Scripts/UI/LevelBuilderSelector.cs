@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -8,6 +9,8 @@ public class LevelBuilderSelector : MonoBehaviour {
 	public GameObject LevelButtonPrefab;
 
 	private LevelDataManager LM;
+
+	public InputField nameField;
 
 	public void Start(){
 		Toolbox.FindComponent<MenuHandler> ().ShowLevelSelector += Show;
@@ -27,9 +30,22 @@ public class LevelBuilderSelector : MonoBehaviour {
 	}
 
 	public void AddNewLevel(){
-		levels.Add (new Level ());
-		CreateNewLevelButton (levels[levels.Count - 1]);
-		LM.Save (levels [levels.Count - 1]);
+		if (nameField == null) {
+			return;
+		}
+
+		if (nameField.text != "") {
+			foreach (Level l in levels) {
+				if (l.name == nameField.text) {
+					return;
+				}
+			}
+
+			levels.Add (new Level (nameField.text));
+			CreateNewLevelButton (levels [levels.Count - 1]);
+			LM.Save (levels [levels.Count - 1]);
+			nameField.transform.parent.gameObject.SetActive (false);
+		}
 	}
 
 	private void CreateNewLevelButton(Level l){

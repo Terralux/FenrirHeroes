@@ -13,4 +13,8 @@ public class Level {
 	public Level(){
 		name = "New Level";
 	}
+
+	public Level(string name){
+		this.name = name;
+	}
 }
