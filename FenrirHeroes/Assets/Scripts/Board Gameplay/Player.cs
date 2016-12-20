@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Player : MonoBehaviour {
 
-	private Stats myStats;
+	private Stats myStats = new Stats();
 
 	public void Move(TileDirections direction){
 		BaseTileObject bto = transform.parent.GetComponent<BaseTileObject> ();

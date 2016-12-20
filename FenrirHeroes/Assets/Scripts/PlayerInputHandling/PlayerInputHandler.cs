@@ -52,26 +52,28 @@ public class PlayerInputHandler : MonoBehaviour {
 		}
 
 
-		if (moveCounts < moveLimit){
-		switch (currentDirection) {
-		case TileDirections.UpRight:
-			queuedActions.Add (new QueableSingleTargetMovement (currentBTOTarget, TileDirections.UpRight));
-			currentBTOTarget = currentBTOTarget.North;
-			break;
-		case TileDirections.UpLeft:
-			queuedActions.Add (new QueableSingleTargetMovement (currentBTOTarget, TileDirections.UpLeft));
-			currentBTOTarget = currentBTOTarget.West;
-			break;
-		case TileDirections.DownRight:
-			queuedActions.Add (new QueableSingleTargetMovement (currentBTOTarget, TileDirections.DownRight));
-			currentBTOTarget = currentBTOTarget.East;
-			break;
-		case TileDirections.DownLeft:
-			queuedActions.Add (new QueableSingleTargetMovement (currentBTOTarget, TileDirections.DownLeft));
-			currentBTOTarget = currentBTOTarget.South;
-			break;
+		if (moveCounts < moveLimit) {
+			switch (currentDirection) {
+			case TileDirections.UpRight:
+				queuedActions.Add (new QueableSingleTargetMovement (currentBTOTarget, TileDirections.UpRight));
+				currentBTOTarget = currentBTOTarget.North;
+				break;
+			case TileDirections.UpLeft:
+				queuedActions.Add (new QueableSingleTargetMovement (currentBTOTarget, TileDirections.UpLeft));
+				currentBTOTarget = currentBTOTarget.West;
+				break;
+			case TileDirections.DownRight:
+				queuedActions.Add (new QueableSingleTargetMovement (currentBTOTarget, TileDirections.DownRight));
+				currentBTOTarget = currentBTOTarget.East;
+				break;
+			case TileDirections.DownLeft:
+				queuedActions.Add (new QueableSingleTargetMovement (currentBTOTarget, TileDirections.DownLeft));
+				currentBTOTarget = currentBTOTarget.South;
+				break;
+			}
+		} else {
+			Debug.Log ("Players movement count already used up!!");
 		}
-	 }
 	}
 
 	public void TurnOn(){
@@ -88,6 +90,7 @@ public class PlayerInputHandler : MonoBehaviour {
 			(queuedActions [0] as QueableSingleTargetAction).Action ();
 			queuedActions.RemoveAt (0);
 			StartCoroutine (ExecuteActions ());
+			moveCounts = 0;
 		} else {
 			Debug.Log ("Finished Actions");
 		}
