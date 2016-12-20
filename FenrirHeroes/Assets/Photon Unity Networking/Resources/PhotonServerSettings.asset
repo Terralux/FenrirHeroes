@@ -30,4 +30,5 @@ MonoBehaviour:
   - PlayersJoined
   - receiveDirection
   - ReceiveDirection
+  - ReceiveReady
   DisableAutoOpenWizard: 1
