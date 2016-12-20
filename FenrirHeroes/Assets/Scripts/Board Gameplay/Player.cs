@@ -11,6 +11,7 @@ public class Player : MonoBehaviour {
 		bto.RemovePlayer ();
 
 		transform.localPosition = Vector3.zero;
+		//Debug.Log ("My move stats is: " + myStats.move);
 	}
 
 	public void AdjustHealth(int adjustmentValue){
@@ -20,4 +21,5 @@ public class Player : MonoBehaviour {
 			Debug.Log ("HAHA! Still alive!");
 		}
 	}
+
 }

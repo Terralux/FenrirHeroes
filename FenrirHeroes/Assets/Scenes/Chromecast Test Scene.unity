@@ -210,6 +210,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LevelButtonPrefab: {fileID: 1000010282879826, guid: c15d1cd76c0908a4a908ade495e8e2fe,
     type: 2}
+  nameField: {fileID: 0}
 --- !u!114 &139767349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1327,6 +1328,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LevelButtonPrefab: {fileID: 1000010282879826, guid: c15d1cd76c0908a4a908ade495e8e2fe,
     type: 2}
+  nameField: {fileID: 0}
 --- !u!114 &478823163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2761,6 +2763,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LevelButtonPrefab: {fileID: 1000010282879826, guid: c15d1cd76c0908a4a908ade495e8e2fe,
     type: 2}
+  nameField: {fileID: 0}
 --- !u!114 &1567562797
 MonoBehaviour:
   m_ObjectHideFlags: 0

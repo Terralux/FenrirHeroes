@@ -25,6 +25,7 @@ public class NetworkInputHandler : Photon.PunBehaviour {
 	public void SendReady(){
 		playerReady = !playerReady;
 		photonView.RPC ("ReceiveReady", PhotonTargets.MasterClient, (playerReady), SystemInfo.deviceUniqueIdentifier);
+		playerReady = false;
 	}
 
 	[PunRPC]
@@ -58,6 +59,7 @@ public class NetworkInputHandler : Photon.PunBehaviour {
 			if (ne.playerReady == true) {
 				Debug.Log ("All clients ready");
 				allPlayersReadyBool = true;
+				ne.playerReady = false;
 			} else {
 				Debug.Log ("Not all clients are ready yet");
 				allPlayersReadyBool = false;
