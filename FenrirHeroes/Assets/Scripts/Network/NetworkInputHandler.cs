@@ -32,7 +32,7 @@ public class NetworkInputHandler : Photon.PunBehaviour {
 	public void ReceiveDirection(TileDirections direction, string playerID) {
 		foreach (NetworkEntity ne in playerEntities) {
 			if (ne.deviceID == playerID) {
-				ne.inputHandler.MoveInDirection (direction);
+				ne.MoveInDirection (direction);
 			}
 		}
 		Debug.Log (direction + "Was sent from: " + playerID);

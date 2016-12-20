@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class PlayerInputHandler : MonoBehaviour {
+    
+	int moveCounts;
 
 	private bool isActive = false;
 
@@ -21,19 +23,18 @@ public class PlayerInputHandler : MonoBehaviour {
 	void Update() {
 		if (isActive) {
 			if (Input.GetKeyDown (KeyCode.A)) {
-				MoveInDirection (TileDirections.UpLeft);
+				MoveInDirection (TileDirections.UpLeft, moveCounts);
 			}
 			if (Input.GetKeyDown (KeyCode.W)) {
-				MoveInDirection (TileDirections.UpRight);
+				MoveInDirection (TileDirections.UpRight, moveCounts);
 			}
 			if (Input.GetKeyDown (KeyCode.D)) {
-				MoveInDirection (TileDirections.DownRight);
+				MoveInDirection (TileDirections.DownRight, moveCounts);
 			}
 			if (Input.GetKeyDown (KeyCode.S)) {
-				MoveInDirection (TileDirections.DownLeft);
+				MoveInDirection (TileDirections.DownLeft, moveCounts);
 			}
 				
-			// Need to find another way to call this, cause it only works if i give it a trigger!
 			if (Toolbox.FindComponent<NetworkInputHandler> ().allPlayersReadyBool == true) {
 				StartCoroutine (ExecuteActions ());
 				Toolbox.FindComponent<NetworkInputHandler> ().allPlayersReadyBool = false;
@@ -42,8 +43,16 @@ public class PlayerInputHandler : MonoBehaviour {
 	}
 		
 
-	public void MoveInDirection(TileDirections currentDirection){
+	public void MoveInDirection(TileDirections currentDirection, int moveLimit){
 		Debug.Log ("I moved!");
+		for (int i = 0 ; i < queuedActions.Count ; i++){
+			if (queuedActions[i] as QueableSingleTargetMovement != null) {
+				moveCounts++;
+			}
+		}
+
+
+		if (moveCounts < moveLimit){
 		switch (currentDirection) {
 		case TileDirections.UpRight:
 			queuedActions.Add (new QueableSingleTargetMovement (currentBTOTarget, TileDirections.UpRight));
@@ -62,6 +71,7 @@ public class PlayerInputHandler : MonoBehaviour {
 			currentBTOTarget = currentBTOTarget.South;
 			break;
 		}
+	 }
 	}
 
 	public void TurnOn(){

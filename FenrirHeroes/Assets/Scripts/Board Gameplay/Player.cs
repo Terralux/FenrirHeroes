@@ -11,15 +11,19 @@ public class Player : MonoBehaviour {
 		bto.RemovePlayer ();
 
 		transform.localPosition = Vector3.zero;
-		//Debug.Log ("My move stats is: " + myStats.move);
+
 	}
 
 	public void AdjustHealth(int adjustmentValue){
-		if (myStats.health.AdjustCurrentStat (adjustmentValue)) {
+		if ((myStats.stats[0] as AdjustableStat).AdjustCurrentStat (adjustmentValue)) {
 			Debug.Log ("Player died!");
 		} else {
 			Debug.Log ("HAHA! Still alive!");
 		}
+	}
+
+	public Stats getStats(){
+		return myStats;
 	}
 
 }
