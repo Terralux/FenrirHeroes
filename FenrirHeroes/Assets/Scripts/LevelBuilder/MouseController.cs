@@ -7,23 +7,19 @@ public class MouseController : MonoBehaviour {
 	[Range(0.2f, 1f)]
 	public float delay = 1f;
 
-	private GameObject currentlySelectedObject;
-
-	private GameObject selectedObject;
-	private GameObject furthestSelectedObject;
-
-	private enum TileControllerState
-	{
-		EMPTY,
-		SINGULAR,
-		DETAILED,
-		MULTIPLE
-	}
+	private TileTargetManager targetManager;
 
 	private TileControllerState tileControllerState = TileControllerState.EMPTY;
 
 	private int xOffset;
 	private int yOffset;
+
+	void Awake() {
+		targetManager = GetComponent<TileTargetManager> ();
+		if (SystemInfo.deviceType != DeviceType.Desktop) {
+			this.enabled = false;
+		}
+	}
 
 	void Update(){
 		RaycastHit hit;
@@ -38,7 +34,7 @@ public class MouseController : MonoBehaviour {
 					if (hit.collider.gameObject.CompareTag ("TemplateTile")) {
 						if (hit.collider.gameObject.transform.childCount > 0) {
 							Debug.Log ("Start Selecting Object");
-							currentlySelectedObject = hit.collider.gameObject.transform.GetChild (0).gameObject;
+							targetManager.currentlySelectedObject = hit.collider.gameObject.transform.GetChild (0).gameObject;
 							StartCoroutine (WaitForGrabActivation ());
 						}
 					}
@@ -50,9 +46,9 @@ public class MouseController : MonoBehaviour {
 
 				if (Physics.Raycast (ray, out hit, 100f)) {
 					if (hit.collider.gameObject.transform.childCount > 0) {
-						if (currentlySelectedObject == hit.collider.gameObject.transform.GetChild (0).gameObject) {
+						if (targetManager.currentlySelectedObject == hit.collider.gameObject.transform.GetChild (0).gameObject) {
 							Debug.Log ("Selected an Object");
-							selectedObject = currentlySelectedObject;
+							targetManager.selectedObject = targetManager.currentlySelectedObject;
 							tileControllerState = TileControllerState.SINGULAR;
 							StopAllCoroutines ();
 						}
@@ -65,16 +61,16 @@ public class MouseController : MonoBehaviour {
 				
 			if (Physics.Raycast (ray, out hit, 100f)) {
 				if (hit.collider.gameObject.CompareTag ("TemplateTile")) {
-					selectedObject.transform.position = hit.collider.transform.position;
+					targetManager.selectedObject.transform.position = hit.collider.transform.position;
 
 					if (Input.GetMouseButtonUp (0)) {
-						if (selectedObject.transform.parent != hit.collider.gameObject) {
-							selectedObject.transform.parent.GetComponent<TemplateTile> ().TransferTileData (hit.collider.gameObject.GetComponent<TemplateTile> ());
-							selectedObject = null;
+						if (targetManager.selectedObject.transform.parent != hit.collider.gameObject) {
+							targetManager.selectedObject.transform.parent.GetComponent<TemplateTile> ().TransferTileData (hit.collider.gameObject.GetComponent<TemplateTile> ());
+							targetManager.selectedObject = null;
 							tileControllerState = TileControllerState.EMPTY;
 						} else {
-							selectedObject.transform.localPosition = new Vector3 (0, 0, 0);
-							selectedObject = null;
+							targetManager.selectedObject.transform.localPosition = new Vector3 (0, 0, 0);
+							targetManager.selectedObject = null;
 							tileControllerState = TileControllerState.EMPTY;
 						}
 					}
@@ -86,31 +82,31 @@ public class MouseController : MonoBehaviour {
 
 			if (Physics.Raycast (ray, out hit, 100f)) {
 				if (Input.GetMouseButtonUp (0)) {
-					if (hit.collider.gameObject != currentlySelectedObject) {
-						Vector3 offset = selectedObject.transform.parent.position - hit.collider.gameObject.transform.position;
+					if (hit.collider.gameObject != targetManager.currentlySelectedObject.transform.parent.gameObject) {
+						Vector3 offset = targetManager.selectedObject.transform.parent.position - hit.collider.gameObject.transform.position;
 						xOffset = (int)(offset.x);
 						yOffset = (int)(offset.z);
 						tileControllerState = TileControllerState.MULTIPLE;
 
 						GameObject target;
-						GameObject rowTarget = selectedObject;
+						GameObject rowTarget = targetManager.selectedObject;
 
-						markedObjects.Clear ();
+						targetManager.markedObjects.Clear ();
 
 						for (int i = 0; i < Mathf.Abs (yOffset) + 1; i++) {
-							markedObjects.Add (rowTarget);
+							targetManager.markedObjects.Add (rowTarget);
 							target = rowTarget;
 							for (int j = 0; j < Mathf.Abs (xOffset); j++) {
 								if (xOffset > 0) {
 									if (target.transform.parent.GetComponent<TemplateTile> ().left.transform.childCount > 0) {
-										markedObjects.Add (target.transform.parent.GetComponent<TemplateTile> ().left.transform.GetChild (0).gameObject);
+										targetManager.markedObjects.Add (target.transform.parent.GetComponent<TemplateTile> ().left.transform.GetChild (0).gameObject);
 									}
 								} else {
 									if (target.transform.parent.GetComponent<TemplateTile> ().right.transform.childCount > 0) {
-										markedObjects.Add (target.transform.parent.GetComponent<TemplateTile> ().right.transform.GetChild (0).gameObject);
+										targetManager.markedObjects.Add (target.transform.parent.GetComponent<TemplateTile> ().right.transform.GetChild (0).gameObject);
 									}
 								}
-								target = markedObjects [markedObjects.Count - 1];
+								target = targetManager.markedObjects [targetManager.markedObjects.Count - 1];
 							}
 							if (yOffset > 0) {
 								if (rowTarget.transform.parent.GetComponent<TemplateTile> ().down.transform.childCount > 0) {
@@ -123,7 +119,9 @@ public class MouseController : MonoBehaviour {
 							}
 						}
 					} else {
-						// show UI TILE OPTIONS ----------------------------------------------------------------------------------------------------------
+						Debug.Log ("Show UI Tile options");
+						targetManager.ShowAdvancedOptionsForSelectedTile ();
+						tileControllerState = TileControllerState.EMPTY;
 					}
 				}
 			}
@@ -134,67 +132,37 @@ public class MouseController : MonoBehaviour {
 			if (Physics.Raycast (ray, out hit, 100f)) {
 				if (hit.collider.gameObject.CompareTag ("TemplateTile")) {
 
-					selectedObject.transform.position = hit.collider.transform.position;
+					targetManager.selectedObject.transform.position = hit.collider.transform.position;
 
 					MoveMarkedTiles ();
 
 					if (Input.GetMouseButtonUp (0)) {
-						selectedObject.transform.parent.GetComponent<TemplateTile> ().TransferTileData(hit.collider.gameObject.GetComponent<TemplateTile> ());
-						selectedObject = null;
+						targetManager.selectedObject.transform.parent.GetComponent<TemplateTile> ().TransferTileData(hit.collider.gameObject.GetComponent<TemplateTile> ());
+						targetManager.selectedObject = null;
 						tileControllerState = TileControllerState.EMPTY;
 					}
 				}
 			}
 			break;
 		}
-	}
-
-	private List<GameObject> markedObjects = new List<GameObject>();
-
-	void OnDrawGizmos(){
-		foreach (GameObject g in markedObjects) {
-			if (g != null) {
-				Gizmos.DrawWireSphere (g.transform.position, 0.4f);
-			}
-		}
-	}
-
-	void OnGUI(){
-		GUI.Box (new Rect (10, 10, 100, 30), markedObjects.Count.ToString());
-	}
+  	}
 
 	void MoveMarkedTiles(){
-		Vector3 offset = selectedObject.transform.parent.position - selectedObject.transform.position;
-		foreach (GameObject g in markedObjects) {
+		Vector3 offset = targetManager.selectedObject.transform.parent.position - targetManager.selectedObject.transform.position;
+		foreach (GameObject g in targetManager.markedObjects) {
 			g.transform.position = g.transform.parent.position - offset;
 		}
 	}
 
 	IEnumerator WaitForGrabActivation(){
 		yield return new WaitForSeconds (delay);
-		selectedObject = currentlySelectedObject;
+		targetManager.selectedObject = targetManager.currentlySelectedObject;
 		tileControllerState = TileControllerState.DETAILED;
 		Debug.Log ("Selected an advanced object");
 	}
 
-	public void DeleteSelectedObjects(bool isDeletingEntireTile){
-		if (tileControllerState != TileControllerState.MULTIPLE) {
-			if (isDeletingEntireTile) {
-				selectedObject.transform.parent.GetComponent<TemplateTile> ().RemoveTile ();
-				Destroy (selectedObject);
-			} else {
-				selectedObject.transform.parent.GetComponent<TemplateTile> ().RemoveStructure ();
-			}
-		} else {
-			foreach (GameObject go in markedObjects) {
-				if (isDeletingEntireTile) {
-					go.transform.parent.GetComponent<TemplateTile> ().RemoveTile ();
-					Destroy (go);
-				} else {
-					go.transform.parent.GetComponent<TemplateTile> ().RemoveStructure ();
-				}
-			}
-		}
-		tileControllerState = TileControllerState.EMPTY;
+	public void SetControllerState(TileControllerState controllerState){
+		Debug.Log (controllerState);
+		tileControllerState = controllerState;
 	}
 }

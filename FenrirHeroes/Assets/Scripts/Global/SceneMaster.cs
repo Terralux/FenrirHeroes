@@ -13,4 +13,8 @@ public class SceneMaster : MonoBehaviour {
 	public void LoadSessionScene(){
 		UnityEngine.SceneManagement.SceneManager.LoadScene (SessionSceneID);
 	}
+
+	public bool IsGameScene(){
+		return UnityEngine.SceneManagement.SceneManager.GetActiveScene ().name == SessionSceneID;
+	}
 }
