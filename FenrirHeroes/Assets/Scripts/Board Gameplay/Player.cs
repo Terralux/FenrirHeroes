@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Player : MonoBehaviour {
 
-	private Stats myStats;
+	private Stats myStats = new Stats();
 
 	public void Move(TileDirections direction){
 		BaseTileObject bto = transform.parent.GetComponent<BaseTileObject> ();
@@ -11,6 +11,7 @@ public class Player : MonoBehaviour {
 		bto.RemovePlayer ();
 
 		transform.localPosition = Vector3.zero;
+
 	}
 
 	public void AdjustHealth(int adjustmentValue){
@@ -20,4 +21,9 @@ public class Player : MonoBehaviour {
 			Debug.Log ("HAHA! Still alive!");
 		}
 	}
+
+	public Stats getStats(){
+		return myStats;
+	}
+
 }

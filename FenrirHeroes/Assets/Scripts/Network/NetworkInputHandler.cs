@@ -25,13 +25,14 @@ public class NetworkInputHandler : Photon.PunBehaviour {
 	public void SendReady(){
 		playerReady = !playerReady;
 		photonView.RPC ("ReceiveReady", PhotonTargets.MasterClient, (playerReady), SystemInfo.deviceUniqueIdentifier);
+		playerReady = false;
 	}
 
 	[PunRPC]
 	public void ReceiveDirection(TileDirections direction, string playerID) {
 		foreach (NetworkEntity ne in playerEntities) {
 			if (ne.deviceID == playerID) {
-				ne.inputHandler.MoveInDirection (direction);
+				ne.MoveInDirection (direction);
 			}
 		}
 		Debug.Log (direction + "Was sent from: " + playerID);
@@ -58,6 +59,7 @@ public class NetworkInputHandler : Photon.PunBehaviour {
 			if (ne.playerReady == true) {
 				Debug.Log ("All clients ready");
 				allPlayersReadyBool = true;
+				ne.playerReady = false;
 			} else {
 				Debug.Log ("Not all clients are ready yet");
 				allPlayersReadyBool = false;

@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class PlayerInputHandler : MonoBehaviour {
+    
+	int moveCounts;
 
 	private bool isActive = false;
 
@@ -21,19 +23,18 @@ public class PlayerInputHandler : MonoBehaviour {
 	void Update() {
 		if (isActive) {
 			if (Input.GetKeyDown (KeyCode.A)) {
-				MoveInDirection (TileDirections.UpLeft);
+				MoveInDirection (TileDirections.UpLeft, moveCounts);
 			}
 			if (Input.GetKeyDown (KeyCode.W)) {
-				MoveInDirection (TileDirections.UpRight);
+				MoveInDirection (TileDirections.UpRight, moveCounts);
 			}
 			if (Input.GetKeyDown (KeyCode.D)) {
-				MoveInDirection (TileDirections.DownRight);
+				MoveInDirection (TileDirections.DownRight, moveCounts);
 			}
 			if (Input.GetKeyDown (KeyCode.S)) {
-				MoveInDirection (TileDirections.DownLeft);
+				MoveInDirection (TileDirections.DownLeft, moveCounts);
 			}
 				
-			// Need to find another way to call this, cause it only works if i give it a trigger!
 			if (Toolbox.FindComponent<NetworkInputHandler> ().allPlayersReadyBool == true) {
 				StartCoroutine (ExecuteActions ());
 				Toolbox.FindComponent<NetworkInputHandler> ().allPlayersReadyBool = false;
@@ -42,25 +43,36 @@ public class PlayerInputHandler : MonoBehaviour {
 	}
 		
 
-	public void MoveInDirection(TileDirections currentDirection){
+	public void MoveInDirection(TileDirections currentDirection, int moveLimit){
 		Debug.Log ("I moved!");
-		switch (currentDirection) {
-		case TileDirections.UpRight:
-			queuedActions.Add (new QueableSingleTargetMovement (currentBTOTarget, TileDirections.UpRight));
-			currentBTOTarget = currentBTOTarget.North;
-			break;
-		case TileDirections.UpLeft:
-			queuedActions.Add (new QueableSingleTargetMovement (currentBTOTarget, TileDirections.UpLeft));
-			currentBTOTarget = currentBTOTarget.West;
-			break;
-		case TileDirections.DownRight:
-			queuedActions.Add (new QueableSingleTargetMovement (currentBTOTarget, TileDirections.DownRight));
-			currentBTOTarget = currentBTOTarget.East;
-			break;
-		case TileDirections.DownLeft:
-			queuedActions.Add (new QueableSingleTargetMovement (currentBTOTarget, TileDirections.DownLeft));
-			currentBTOTarget = currentBTOTarget.South;
-			break;
+		for (int i = 0 ; i < queuedActions.Count ; i++){
+			if (queuedActions[i] as QueableSingleTargetMovement != null) {
+				moveCounts++;
+			}
+		}
+
+
+		if (moveCounts < moveLimit) {
+			switch (currentDirection) {
+			case TileDirections.UpRight:
+				queuedActions.Add (new QueableSingleTargetMovement (currentBTOTarget, TileDirections.UpRight));
+				currentBTOTarget = currentBTOTarget.North;
+				break;
+			case TileDirections.UpLeft:
+				queuedActions.Add (new QueableSingleTargetMovement (currentBTOTarget, TileDirections.UpLeft));
+				currentBTOTarget = currentBTOTarget.West;
+				break;
+			case TileDirections.DownRight:
+				queuedActions.Add (new QueableSingleTargetMovement (currentBTOTarget, TileDirections.DownRight));
+				currentBTOTarget = currentBTOTarget.East;
+				break;
+			case TileDirections.DownLeft:
+				queuedActions.Add (new QueableSingleTargetMovement (currentBTOTarget, TileDirections.DownLeft));
+				currentBTOTarget = currentBTOTarget.South;
+				break;
+			}
+		} else {
+			Debug.Log ("Players movement count already used up!!");
 		}
 	}
 
@@ -78,6 +90,7 @@ public class PlayerInputHandler : MonoBehaviour {
 			(queuedActions [0] as QueableSingleTargetAction).Action ();
 			queuedActions.RemoveAt (0);
 			StartCoroutine (ExecuteActions ());
+			moveCounts = 0;
 		} else {
 			Debug.Log ("Finished Actions");
 		}
