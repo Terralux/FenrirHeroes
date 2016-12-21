@@ -8,7 +8,8 @@ public class PlacableObject {
 
 	public TileDirections myDirection = TileDirections.UpRight;
 
-	public PlacableObject(int x, int y){
+	public PlacableObject(TileDirections direction, int x, int y){
+		myDirection = direction;
 		xPos = x;
 		yPos = y;
 	}
