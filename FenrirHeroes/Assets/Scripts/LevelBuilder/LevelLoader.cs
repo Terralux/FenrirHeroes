@@ -41,7 +41,8 @@ public class LevelLoader : MonoBehaviour {
 
 						if (currentLevel.tiles [x, y, z].myStructure != null) {
 							tempGO = pm.GetPiece (currentLevel.tiles [x, y, z].myStructure.GraphicsID, ObjectTypes.OBSTACLE);
-							(Instantiate (tempGO, new Vector3 (x, y, z), tempGO.transform.rotation) as GameObject).transform.SetParent (tileObjects [x, y, z].transform);
+							Quaternion rotationWithOffset = Quaternion.Euler (0, 90 * (int)currentLevel.tiles[x, y, z].myStructure.myDirection, 0);
+							(Instantiate (tempGO, new Vector3 (x, y, z), rotationWithOffset) as GameObject).transform.SetParent (tileObjects [x, y, z].transform);
 							bto.currentGameState = TileGameplayState.IMPASSABLE;
 						} else {
 							bto.currentGameState = TileGameplayState.PASSABLE;

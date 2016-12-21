@@ -1,13 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Stats {
 
-	public AdjustableStat health;
-	public AdjustableStat mana;
+	public List<BaseStat> stats = new List<BaseStat> ();
 
-	public ModifiableStat damage;
-	public ModifiableStat defense;
-	public ModifiableStat move;
+	public Stats(){
+		stats.Add (new AdjustableStat());		//health
+		stats.Add (new AdjustableStat());		//mana
+
+		stats.Add (new ModifiableStat());		//damage
+		stats.Add (new ModifiableStat());		//defense
+		stats.Add (new ModifiableStat());		//move
+	}
 
 }

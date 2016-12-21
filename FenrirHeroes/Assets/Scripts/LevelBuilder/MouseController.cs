@@ -62,17 +62,28 @@ public class MouseController : MonoBehaviour {
 			if (Physics.Raycast (ray, out hit, 100f)) {
 				if (hit.collider.gameObject.CompareTag ("TemplateTile")) {
 					targetManager.selectedObject.transform.position = hit.collider.transform.position;
-
-					if (Input.GetMouseButtonUp (0)) {
-						if (targetManager.selectedObject.transform.parent != hit.collider.gameObject) {
-							targetManager.selectedObject.transform.parent.GetComponent<TemplateTile> ().TransferTileData (hit.collider.gameObject.GetComponent<TemplateTile> ());
-							targetManager.selectedObject = null;
-							tileControllerState = TileControllerState.EMPTY;
-						} else {
-							targetManager.selectedObject.transform.localPosition = new Vector3 (0, 0, 0);
+					if (hit.collider.gameObject != targetManager.currentlySelectedObject.transform.parent.gameObject) {
+						if (Input.GetMouseButtonUp (0)) {
+							if (targetManager.selectedObject.transform.parent != hit.collider.gameObject) {
+								targetManager.selectedObject.transform.parent.GetComponent<TemplateTile> ().TransferTileData (hit.collider.gameObject.GetComponent<TemplateTile> ());
+								targetManager.selectedObject = null;
+								tileControllerState = TileControllerState.EMPTY;
+							} else {
+								targetManager.selectedObject.transform.localPosition = new Vector3 (0, 0, 0);
+								targetManager.selectedObject = null;
+								tileControllerState = TileControllerState.EMPTY;
+							}
+						}
+					} else {
+						if (Input.GetMouseButtonDown (0)) {
+							StartCoroutine (WaitForRotation());
+						}
+						if (Input.GetMouseButtonUp (0)) {
+							StopAllCoroutines ();
 							targetManager.selectedObject = null;
 							tileControllerState = TileControllerState.EMPTY;
 						}
+						//Rotate the object
 					}
 				}
 			}
@@ -159,6 +170,12 @@ public class MouseController : MonoBehaviour {
 		targetManager.selectedObject = targetManager.currentlySelectedObject;
 		tileControllerState = TileControllerState.DETAILED;
 		Debug.Log ("Selected an advanced object");
+	}
+
+	IEnumerator WaitForRotation(){
+		yield return new WaitForSeconds (0.5f);
+		targetManager.selectedObject.transform.parent.GetComponent<TemplateTile> ().Rotate ();
+		StartCoroutine (WaitForRotation ());
 	}
 
 	public void SetControllerState(TileControllerState controllerState){

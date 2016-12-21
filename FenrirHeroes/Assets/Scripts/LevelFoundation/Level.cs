@@ -6,7 +6,7 @@ using System.Collections.Generic;
 [Serializable]
 public class Level {
 	public string name;
-	public Tile[,,] tiles = new Tile[20,20,20];
+	public BaseTile[,,] tiles = new BaseTile[20,20,20];
 
 	public List<LevelPiece> levelPieces = new List<LevelPiece>();
 

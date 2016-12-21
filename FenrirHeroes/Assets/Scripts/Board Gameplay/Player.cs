@@ -14,7 +14,7 @@ public class Player : MonoBehaviour {
 	}
 
 	public void AdjustHealth(int adjustmentValue){
-		if (myStats.health.AdjustCurrentStat (adjustmentValue)) {
+		if ((myStats.stats[0] as AdjustableStat).AdjustCurrentStat (adjustmentValue)) {
 			Debug.Log ("Player died!");
 		} else {
 			Debug.Log ("HAHA! Still alive!");
