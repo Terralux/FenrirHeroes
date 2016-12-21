@@ -35,7 +35,7 @@ public class TemplateTile : MonoBehaviour {
 	public void TransferTileData(TemplateTile tempTile){
 		
 		if (this != tempTile) {
-			tempTile.myTile = new BaseTile (myTile.TileGraphicID, (int)tempTile.transform.position.x, (int)tempTile.transform.position.z);
+			tempTile.myTile = new BaseTile (myTile.TileGraphicID, myTile.myDirection, (int)tempTile.transform.position.x, (int)tempTile.transform.position.z);
 
 			tempTile.tile = tile;
 			tempTile.tile.transform.SetParent (tempTile.transform);
@@ -70,7 +70,7 @@ public class TemplateTile : MonoBehaviour {
 		switch (objectType) {
 		case ObjectTypes.TILE:
 			if (myTile == null) {
-				myTile = new BaseTile (ID, (int)transform.position.x, (int)transform.position.z);
+				myTile = new BaseTile (ID, TileDirections.UpRight, (int)transform.position.x, (int)transform.position.z);
 				tile = go;
 				tile.transform.SetParent (transform);
 			} else {
@@ -150,7 +150,7 @@ public class TemplateTile : MonoBehaviour {
 
 	public void AddNewActionToTile(TileAction tileAction){
 		if (myTile as ActionTile == null) {
-			ActionTile at = new ActionTile (myTile.TileGraphicID, myTile.myStructure, (myTile as PlayerStartTile) == null ? false : (myTile as PlayerStartTile).isAPlayerStartTile, myTile.xPos, myTile.yPos);
+			ActionTile at = new ActionTile (myTile.TileGraphicID, myTile.myDirection, myTile.myStructure, (myTile as PlayerStartTile) == null ? false : (myTile as PlayerStartTile).isAPlayerStartTile, myTile.xPos, myTile.yPos);
 			at.myTilesActions.Add (tileAction);
 			myTile = at as BaseTile;
 			Debug.Log ("Wasn't a derived ActionTile");
@@ -182,5 +182,6 @@ public class TemplateTile : MonoBehaviour {
 			}
 			tile.transform.Rotate (new Vector3 (0, 90, 0));
 		}
+		BM.UpdateTile (myTile);
 	}
 }

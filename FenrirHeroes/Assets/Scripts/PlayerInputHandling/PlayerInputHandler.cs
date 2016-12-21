@@ -51,7 +51,6 @@ public class PlayerInputHandler : MonoBehaviour {
 			}
 		}
 
-
 		if (moveCounts < moveLimit) {
 			switch (currentDirection) {
 			case TileDirections.UpRight:

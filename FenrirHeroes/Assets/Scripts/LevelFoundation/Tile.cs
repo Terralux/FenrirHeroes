@@ -7,11 +7,11 @@ public class BaseTile : PlacableObject{
 	public int TileGraphicID;
 	public Structure myStructure;
 
-	public BaseTile(int ID, int x, int y) : base (x, y) {
+	public BaseTile(int ID, TileDirections direction, int x, int y) : base (direction, x, y) {
 		TileGraphicID = ID;
 	}
 
-	public BaseTile(int ID, Structure s, int x, int y) : base (x, y) {
+	public BaseTile(int ID, TileDirections direction, Structure s, int x, int y) : base (direction, x, y) {
 		TileGraphicID = ID;
 		myStructure = s;
 	}
@@ -22,7 +22,7 @@ public class PlayerStartTile : BaseTile{
 	
 	public bool isAPlayerStartTile;
 
-	public PlayerStartTile(int ID, Structure s, bool isPlayerStartPosition, int x, int y) : base (ID, s, x, y) {
+	public PlayerStartTile(int ID, TileDirections direction, Structure s, bool isPlayerStartPosition, int x, int y) : base (ID, direction, s, x, y) {
 		isAPlayerStartTile = isPlayerStartPosition;
 	}
 }
@@ -32,7 +32,7 @@ public class ActionTile : PlayerStartTile{
 
 	public List<TileAction> myTilesActions = new List<TileAction>();
 
-	public ActionTile(int ID, Structure s, bool isNewPlayerStartPosition, int x, int y) : base (ID, s, isNewPlayerStartPosition, x, y) {
+	public ActionTile(int ID, TileDirections direction, Structure s, bool isNewPlayerStartPosition, int x, int y) : base (ID, direction, s, isNewPlayerStartPosition, x, y) {
 		
 	}
 }
@@ -145,7 +145,7 @@ public class EventTile : PlayerStartTile{
 
 	public int interactionsBeforeActivation = 1;
 
-	public EventTile(int ID, Structure s, bool isNewPlayerStartPosition, int x, int y) : base (ID, s, isNewPlayerStartPosition, x, y) {
+	public EventTile(int ID, TileDirections direction, Structure s, bool isNewPlayerStartPosition, int x, int y) : base (ID, direction, s, isNewPlayerStartPosition, x, y) {
 		
 	}
 }

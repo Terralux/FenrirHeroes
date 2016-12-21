@@ -70,6 +70,27 @@ public class TileTargetManager : MonoBehaviour {
 
 	public void DuplicateTile(){
 		Transform parent = selectedObject.transform.parent;
+		BaseTile bt = selectedObject.transform.parent.GetComponent<TemplateTile>().GetTile();
+		BaseTile neoBT;
+
+		if (bt as PlayerStartTile != null) {
+			if (bt as ActionTile != null) {
+				ActionTile at = bt as ActionTile;
+				neoBT = new ActionTile (at.TileGraphicID, at.myDirection, at.myStructure, at.isAPlayerStartTile, at.xPos, at.yPos) as BaseTile;
+				(neoBT as ActionTile).myTilesActions = at.myTilesActions;
+			} else if (bt as EventTile != null) {
+				EventTile et = bt as EventTile;
+				neoBT = new EventTile (et.TileGraphicID, et.myDirection, et.myStructure, et.isAPlayerStartTile, et.xPos, et.yPos) as BaseTile;
+				(neoBT as EventTile).interactionsBeforeActivation = et.interactionsBeforeActivation;
+				(neoBT as EventTile).myEvent = et.myEvent;
+			} else {
+				PlayerStartTile pst = bt as PlayerStartTile;
+				neoBT = new PlayerStartTile (pst.TileGraphicID, pst.myDirection, pst.myStructure, pst.isAPlayerStartTile, pst.xPos, pst.yPos) as BaseTile;
+			}
+		} else {
+			neoBT = new BaseTile (bt.TileGraphicID, bt.myDirection, bt.xPos, bt.yPos);
+		}
+
 		selectedObject.transform.localPosition = Vector3.zero;
 		selectedObject = Instantiate (selectedObject, selectedObject.transform.position, selectedObject.transform.rotation) as GameObject;
 		selectedObject.transform.SetParent (parent);
@@ -101,7 +122,6 @@ public class TileTargetManager : MonoBehaviour {
 			selectedObject.transform.parent.GetComponent<TemplateTile> ().AddNewActionToTile (new SwitchStateTileAction ());
 			break;
 		}
-
 		Reset ();
 	}
 
