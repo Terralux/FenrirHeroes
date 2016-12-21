@@ -7,10 +7,20 @@ public class AdvancedTileUIHandler : MonoBehaviour {
 	public GameObject deleteStructure;
 	public GameObject deleteTile;
 	public GameObject markAsStartTile;
-	public GameObject connectToAction;
 	public GameObject duplicate;
 
-	public void ShowOptions(Tile myTile){
+	public GameObject makeEventTile;
+	public GameObject addActionTile;
+
+	/*
+	 * DeleteStructure
+	 * DeleteTile
+	 * MarkAsStartTile
+	 * ConnectToAction
+	 * Duplicate
+	*/
+
+	public void ShowOptions(BaseTile myTile){
 		gameObject.SetActive (true);
 		deleteTile.SetActive (true);
 		duplicate.SetActive (true);
@@ -18,8 +28,11 @@ public class AdvancedTileUIHandler : MonoBehaviour {
 		if (myTile.myStructure != null) {
 			deleteStructure.SetActive (true);
 		} else {
-			markAsStartTile.SetActive (true);
-			connectToAction.SetActive (true);
+			if (myTile.myStructure as Obstacle != null) {
+				markAsStartTile.SetActive (true);
+				addActionTile.SetActive (true);
+				makeEventTile.SetActive (true);
+			}
 		}
 	}
 }

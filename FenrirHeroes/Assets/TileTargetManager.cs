@@ -78,9 +78,35 @@ public class TileTargetManager : MonoBehaviour {
 		advancedUIHandler.gameObject.SetActive (false);
 	}
 
-	public void ConnectToActiveObject(){
-		Debug.Log ("Interactivity not implemented yet!");
-		throw new System.NotImplementedException ();
+	public void AddActionToObject(int index){
+		TileActions action = (TileActions) index;
+
+		switch (action) {
+		case TileActions.DeleteObject:
+			selectedObject.transform.parent.GetComponent<TemplateTile> ().AddNewActionToTile (new DeleteObjectTileAction ());
+			break;
+		case TileActions.MoveCharacter:
+			selectedObject.transform.parent.GetComponent<TemplateTile> ().AddNewActionToTile (new MoveCharacterTileAction ());
+			break;
+		case TileActions.MultipleUse:
+			selectedObject.transform.parent.GetComponent<TemplateTile> ().AddNewActionToTile (new MultipleUseTileAction ());
+			break;
+		case TileActions.SpawnObject:
+			selectedObject.transform.parent.GetComponent<TemplateTile> ().AddNewActionToTile (new SpawnObjectTileAction ());
+			break;
+		case TileActions.Stats:
+			selectedObject.transform.parent.GetComponent<TemplateTile> ().AddNewActionToTile (new StatsTileAction ());
+			break;
+		case TileActions.SwitchState:
+			selectedObject.transform.parent.GetComponent<TemplateTile> ().AddNewActionToTile (new SwitchStateTileAction ());
+			break;
+		}
+
+		Reset ();
+	}
+
+	public void MakeEventTile(){
+
 		Reset ();
 	}
 }

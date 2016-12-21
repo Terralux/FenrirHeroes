@@ -111,7 +111,7 @@ public class BuilderManager : LevelLoader {
 		tileObjects [(int)templateTileGraphics.transform.parent.position.x, floorIndex, (int)templateTileGraphics.transform.parent.position.z] = templateTileGraphics;
 	}
 
-	public void UpdateTile(Tile updatedTile){
+	public void UpdateTile(BaseTile updatedTile){
 		currentLevel.tiles [updatedTile.xPos, floorIndex, updatedTile.yPos] = updatedTile;
 		SaveLevel ();
 	}
