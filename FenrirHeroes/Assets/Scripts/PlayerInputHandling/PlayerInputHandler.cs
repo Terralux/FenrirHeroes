@@ -54,20 +54,61 @@ public class PlayerInputHandler : MonoBehaviour {
 		if (moveCounts < moveLimit) {
 			switch (currentDirection) {
 			case TileDirections.UpRight:
-				queuedActions.Add (new QueableSingleTargetMovement (currentBTOTarget, TileDirections.UpRight));
-				currentBTOTarget = currentBTOTarget.North;
+				if (currentBTOTarget.North != null) {
+					if (currentBTOTarget.North.currentGameState == TileGameplayState.PASSABLE) {
+						queuedActions.Add (new QueableSingleTargetMovement (currentBTOTarget, TileDirections.UpRight));
+						currentBTOTarget = currentBTOTarget.North;
+						break;
+					} else {
+						Debug.Log ("The tile you are trying to access is IMPASSABLE");
+					}
+				} else {
+					Debug.Log ("There is no tile!");
+
+				}
 				break;
+
 			case TileDirections.UpLeft:
-				queuedActions.Add (new QueableSingleTargetMovement (currentBTOTarget, TileDirections.UpLeft));
-				currentBTOTarget = currentBTOTarget.West;
+				if (currentBTOTarget.West != null) {
+					if (currentBTOTarget.West.currentGameState == TileGameplayState.PASSABLE) {
+						queuedActions.Add (new QueableSingleTargetMovement (currentBTOTarget, TileDirections.UpLeft));
+						currentBTOTarget = currentBTOTarget.West;
+						break;
+					} else {
+						Debug.Log ("The tile you are trying to access is IMPASSABLE");
+					}
+				} else {
+					Debug.Log ("There is no tile!");
+
+				}
 				break;
 			case TileDirections.DownRight:
-				queuedActions.Add (new QueableSingleTargetMovement (currentBTOTarget, TileDirections.DownRight));
-				currentBTOTarget = currentBTOTarget.East;
+				if (currentBTOTarget.East != null) {
+					if (currentBTOTarget.East.currentGameState == TileGameplayState.PASSABLE) {
+						queuedActions.Add (new QueableSingleTargetMovement (currentBTOTarget, TileDirections.DownRight));
+						currentBTOTarget = currentBTOTarget.East;
+						break;
+					} else {
+						Debug.Log ("The tile you are trying to access is IMPASSABLE");
+					}
+				} else {
+					Debug.Log ("There is no tile!");
+
+				}
 				break;
 			case TileDirections.DownLeft:
-				queuedActions.Add (new QueableSingleTargetMovement (currentBTOTarget, TileDirections.DownLeft));
-				currentBTOTarget = currentBTOTarget.South;
+				if (currentBTOTarget.South != null) {
+					if (currentBTOTarget.South.currentGameState == TileGameplayState.PASSABLE) {
+						queuedActions.Add (new QueableSingleTargetMovement (currentBTOTarget, TileDirections.DownLeft));
+						currentBTOTarget = currentBTOTarget.South;
+						break;
+					} else {
+						Debug.Log ("The tile you are trying to access is IMPASSABLE");
+					}
+				} else {
+					Debug.Log ("There is no tile!");
+
+				}
 				break;
 			}
 		} else {
