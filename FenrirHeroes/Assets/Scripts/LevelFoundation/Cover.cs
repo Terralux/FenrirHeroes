@@ -2,7 +2,7 @@
 using System.Collections;
 
 [System.Serializable]
-public class Cover : Structure {
+public class Cover : GraphicsObject {
 	public int coverBonus = 1;
 	public int health = 0;
 

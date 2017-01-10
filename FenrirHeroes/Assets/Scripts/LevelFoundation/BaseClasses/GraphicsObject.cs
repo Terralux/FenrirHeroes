@@ -2,7 +2,7 @@
 using System.Collections;
 
 [System.Serializable]
-public class Structure {
+public class GraphicsObject {
 	public int GraphicsID;
 	public TileDirections myDirection = TileDirections.UpRight;
 }

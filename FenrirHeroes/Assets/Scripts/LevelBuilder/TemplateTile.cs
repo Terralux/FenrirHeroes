@@ -23,13 +23,10 @@ public class TemplateTile : MonoBehaviour {
 		myTile = tempTile;
 		tile = tempTileGO;
 
-		if (myTile.myStructure != null) {
-			if (myTile.myStructure as Creature != null) {
-				creature = tile.transform.GetChild (0).gameObject;
-			} else {
-				structure = tile.transform.GetChild (0).gameObject;
-			}
+		if (myTile.myGraphics != null) {
+			structure = tile.transform.GetChild (0).gameObject;
 		}
+
 	}
 
 	public void TransferTileData(TemplateTile tempTile){
@@ -43,7 +40,7 @@ public class TemplateTile : MonoBehaviour {
 			if (structure != null) {
 				tempTile.structure = structure;
 				tempTile.structure.transform.SetParent (tempTile.tile.transform);
-				tempTile.myTile.myStructure = myTile.myStructure;
+				tempTile.myTile.myGraphics = myTile.myGraphics;
 			}
 
 			if (creature != null) {
@@ -79,8 +76,8 @@ public class TemplateTile : MonoBehaviour {
 			break;
 		case ObjectTypes.OBSTACLE:
 			if (myTile != null) {
-				if (myTile.myStructure == null) {
-					myTile.myStructure = new Obstacle (ID);
+				if (myTile.myGraphics == null) {
+					myTile.myGraphics = new Obstacle (ID) as GraphicsObject;
 					structure = go;
 					structure.transform.SetParent (tile.transform);
 				} else {
@@ -92,8 +89,8 @@ public class TemplateTile : MonoBehaviour {
 			break;
 		case ObjectTypes.COVER:
 			if (myTile != null) {
-				if (myTile.myStructure == null) {
-					myTile.myStructure = new Cover (ID);
+				if (myTile.myGraphics == null) {
+					myTile.myGraphics = new Cover (ID) as GraphicsObject;
 					structure = go;
 					structure.transform.SetParent (tile.transform);
 				} else {
@@ -105,8 +102,8 @@ public class TemplateTile : MonoBehaviour {
 			break;
 		case ObjectTypes.CREATURE:
 			if (myTile != null) {
-				if (myTile.myStructure == null) {
-					myTile.myStructure = new Creature (ID);
+				if (myTile.myGraphics == null) {
+					myTile.myGraphics = new Creature (ID) as GraphicsObject;
 					structure = go;
 					structure.transform.SetParent (tile.transform);
 				} else {
@@ -123,9 +120,7 @@ public class TemplateTile : MonoBehaviour {
 	}
 
 	public void RemoveStructure(){
-		if (myTile.myStructure != null) {
-			myTile.myStructure = null;
-		}
+		myTile.myGraphics = null;
 
 		Destroy (structure);
 		BM.UpdateTile (myTile);
@@ -143,34 +138,26 @@ public class TemplateTile : MonoBehaviour {
 	}
 
 	public void SwitchStartTileOption(){
-		(myTile as PlayerStartTile).isAPlayerStartTile = !(myTile as PlayerStartTile).isAPlayerStartTile;
+		myTile.isPlayerStartTile = !myTile.isPlayerStartTile;
 		BM.UpdateTileGraphics (tile);
 		BM.UpdateTile (myTile);
 	}
 
 	public void AddNewActionToTile(TileAction tileAction){
-		if (myTile as ActionTile == null) {
-			ActionTile at = new ActionTile (myTile.TileGraphicID, myTile.myDirection, myTile.myStructure, (myTile as PlayerStartTile) == null ? false : (myTile as PlayerStartTile).isAPlayerStartTile, myTile.xPos, myTile.yPos);
-			at.myTilesActions.Add (tileAction);
-			myTile = at as BaseTile;
-			Debug.Log ("Wasn't a derived ActionTile");
-		} else {
-			(myTile as ActionTile).myTilesActions.Add (tileAction);
-			Debug.Log ("This time I was a derived ActionTile");
-		}
+		myTile.myTilesActions.Add (tileAction);
 	}
 
 	public void MakeEventTile(int triggersBeforeActivation){
-		(myTile as EventTile).interactionsBeforeActivation = triggersBeforeActivation;
+		myTile.isEventTile = true;
 	}
 
 	public void Rotate(){
-		if (myTile.myStructure != null) {
+		if (myTile.myGraphics != null) {
 			System.Array A = System.Enum.GetValues (typeof(TileDirections));
-			if ((int)myTile.myStructure.myDirection < 3) {
-				myTile.myStructure.myDirection = (TileDirections)A.GetValue ((int)myTile.myStructure.myDirection + 1);
+			if ((int)myTile.myGraphics.myDirection < 3) {
+				myTile.myGraphics.myDirection = (TileDirections)A.GetValue ((int)myTile.myGraphics.myDirection + 1);
 			} else {
-				myTile.myStructure.myDirection = (TileDirections)A.GetValue (0);
+				myTile.myGraphics.myDirection = (TileDirections)A.GetValue (0);
 			}
 			structure.transform.Rotate (new Vector3 (0, 90, 0));
 		} else {
