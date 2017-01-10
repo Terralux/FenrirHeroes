@@ -11,7 +11,6 @@ public class Player : MonoBehaviour {
 		bto.RemovePlayer ();
 
 		transform.localPosition = Vector3.zero;
-
 	}
 
 	public void AdjustHealth(int adjustmentValue){

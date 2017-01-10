@@ -4,37 +4,87 @@ using System.Collections.Generic;
 
 [System.Serializable]
 public class BaseTile : PlacableObject{
+
 	public int TileGraphicID;
-	public Structure myStructure;
+	public ObjectTypes myType = ObjectTypes.TILE;
+	public bool isPlayerStartTile = false;
+	public bool isEventTile = false;
+	public GraphicsObject myGraphics;
+
+	public List<TileAction> myTilesActions = new List<TileAction>();
+
+	public EventTrigger myEventTrigger = EventTrigger.ON_ENTER_TILE;
+	public EventTypes myEventType = EventTypes.UNLIMITED_USES;
+
+	public int triggerSteps = -1;
 
 	public BaseTile(int ID, TileDirections direction, int x, int y) : base (direction, x, y) {
 		TileGraphicID = ID;
 	}
 
-	public BaseTile(int ID, TileDirections direction, Structure s, int x, int y) : base (direction, x, y) {
+	public BaseTile(ObjectTypes objectType, int ID, TileDirections direction, int x, int y) : base (direction, x, y) {
 		TileGraphicID = ID;
-		myStructure = s;
+		myType = objectType;
 	}
-}
 
-[System.Serializable]
-public class PlayerStartTile : BaseTile{
-	
-	public bool isAPlayerStartTile;
-
-	public PlayerStartTile(int ID, TileDirections direction, Structure s, bool isPlayerStartPosition, int x, int y) : base (ID, direction, s, x, y) {
-		isAPlayerStartTile = isPlayerStartPosition;
+	public BaseTile(bool isPlayerSpawnTile, ObjectTypes objectType, int ID, TileDirections direction, int x, int y) : base (direction, x, y) {
+		TileGraphicID = ID;
+		myType = objectType;
+		isPlayerStartTile = isPlayerSpawnTile;
 	}
-}
 
-[System.Serializable]
-public class ActionTile : PlayerStartTile{
-
-	public List<TileAction> myTilesActions = new List<TileAction>();
-
-	public ActionTile(int ID, TileDirections direction, Structure s, bool isNewPlayerStartPosition, int x, int y) : base (ID, direction, s, isNewPlayerStartPosition, x, y) {
-		
+	public BaseTile(GraphicsObject neoGraphics, bool isPlayerSpawnTile, ObjectTypes objectType, int ID, TileDirections direction, int x, int y) : base (direction, x, y) {
+		TileGraphicID = ID;
+		myType = objectType;
+		isPlayerStartTile = isPlayerSpawnTile;
+		myGraphics = neoGraphics;
 	}
+
+	public BaseTile(EventTrigger trigger, GraphicsObject neoGraphics, bool isPlayerSpawnTile, ObjectTypes objectType, int ID, TileDirections direction, int x, int y) : base (direction, x, y) {
+		TileGraphicID = ID;
+		myType = objectType;
+		isPlayerStartTile = isPlayerSpawnTile;
+		myGraphics = neoGraphics;
+		myEventTrigger = trigger;
+	}
+
+	public BaseTile(EventTypes eventType, EventTrigger trigger, GraphicsObject neoGraphics, bool isPlayerSpawnTile, ObjectTypes objectType, int ID, TileDirections direction, int x, int y) : base (direction, x, y) {
+		TileGraphicID = ID;
+		myType = objectType;
+		isPlayerStartTile = isPlayerSpawnTile;
+		myGraphics = neoGraphics;
+		myEventTrigger = trigger;
+		myEventType = eventType;
+	}
+
+	public BaseTile(int triggerSteps, EventTypes eventType, EventTrigger trigger, GraphicsObject neoGraphics, bool isPlayerSpawnTile, ObjectTypes objectType, int ID, TileDirections direction, int x, int y) : base (direction, x, y) {
+		TileGraphicID = ID;
+		myType = objectType;
+		isPlayerStartTile = isPlayerSpawnTile;
+		myGraphics = neoGraphics;
+		myEventTrigger = trigger;
+		myEventType = eventType;
+		this.triggerSteps = triggerSteps;
+	}
+
+	public BaseTile(List<TileAction> actions, int triggerSteps, EventTypes eventType, EventTrigger trigger, GraphicsObject neoGraphics, bool isPlayerSpawnTile, ObjectTypes objectType, int ID, TileDirections direction, int x, int y) : base (direction, x, y) {
+		TileGraphicID = ID;
+		myType = objectType;
+		isPlayerStartTile = isPlayerSpawnTile;
+		myGraphics = neoGraphics;
+		myEventTrigger = trigger;
+		myEventType = eventType;
+		this.triggerSteps = triggerSteps;
+		myTilesActions = actions;
+	}
+
+	public bool GetIsTilePassable() {
+		if (myType == ObjectTypes.TILE || myType == ObjectTypes.PROP || myType == ObjectTypes.COVER) {
+			return true;
+		}
+		return false;
+	}
+
 }
 
 [System.Serializable]
@@ -133,19 +183,6 @@ public class MoveCharacterTileAction : TileAction{
 	}
 
 	public MoveCharacterTileAction(){
-		
-	}
-}
-
-[System.Serializable]
-public class EventTile : PlayerStartTile{
-
-	public delegate void voidEvent();
-	public voidEvent myEvent;
-
-	public int interactionsBeforeActivation = 1;
-
-	public EventTile(int ID, TileDirections direction, Structure s, bool isNewPlayerStartPosition, int x, int y) : base (ID, direction, s, isNewPlayerStartPosition, x, y) {
 		
 	}
 }

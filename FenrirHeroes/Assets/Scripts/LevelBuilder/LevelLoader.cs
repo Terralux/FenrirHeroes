@@ -39,13 +39,26 @@ public class LevelLoader : MonoBehaviour {
 						tileObjects [x, y, z] = Instantiate(tempGO, new Vector3(x, y, z), tempGO.transform.rotation) as GameObject;
 						BaseTileObject bto = tileObjects [x, y, z].AddComponent<BaseTileObject> ();
 
-						if (currentLevel.tiles [x, y, z].myStructure != null) {
-							tempGO = pm.GetPiece (currentLevel.tiles [x, y, z].myStructure.GraphicsID, ObjectTypes.OBSTACLE);
-							Quaternion rotationWithOffset = Quaternion.Euler (0, 90 * (int)currentLevel.tiles[x, y, z].myStructure.myDirection, 0);
-							(Instantiate (tempGO, new Vector3 (x, y, z), rotationWithOffset) as GameObject).transform.SetParent (tileObjects [x, y, z].transform);
+						if (currentLevel.tiles [x, y, z] != null) {
+							Debug.Log (currentLevel.tiles [x, y, z].myGraphics);
+						}
+
+						if (!currentLevel.tiles [x, y, z].GetIsTilePassable()) {
 							bto.currentGameState = TileGameplayState.IMPASSABLE;
+
+							if (currentLevel.tiles [x, y, z].myGraphics != null) {
+								tempGO = pm.GetPiece (currentLevel.tiles [x, y, z].myGraphics.GraphicsID, ObjectTypes.OBSTACLE);
+								Quaternion rotationWithOffset = Quaternion.Euler (0, 90 * (int)currentLevel.tiles [x, y, z].myGraphics.myDirection, 0);
+								(Instantiate (tempGO, new Vector3 (x, y, z), rotationWithOffset) as GameObject).transform.SetParent (tileObjects [x, y, z].transform);
+							}
 						} else {
 							bto.currentGameState = TileGameplayState.PASSABLE;
+
+							if (currentLevel.tiles [x, y, z].myGraphics != null) {
+								tempGO = pm.GetPiece (currentLevel.tiles [x, y, z].myGraphics.GraphicsID, ObjectTypes.OBSTACLE);
+								Quaternion rotationWithOffset = Quaternion.Euler (0, 90 * (int)currentLevel.tiles [x, y, z].myGraphics.myDirection, 0);
+								(Instantiate (tempGO, new Vector3 (x, y, z), rotationWithOffset) as GameObject).transform.SetParent (tileObjects [x, y, z].transform);
+							}
 						}
 
 						if (Toolbox.FindComponent<SceneMaster> ().IsGameScene ()) {
@@ -71,7 +84,6 @@ public class LevelLoader : MonoBehaviour {
 							}
 
 							if (!hasFoundFirstTile) {
-								//if (currentLevel.tiles [x, y, z].isAPlayerStartTile) {
 								GameObject tempPlayer = Instantiate (playerPrefab, new Vector3 (x, y, z), playerPrefab.transform.rotation) as GameObject; 
 								tempPlayer.transform.SetParent (tileObjects [x, y, z].transform);
 								tempPlayer.AddComponent<PlayerInputHandler> ();

@@ -16,7 +16,6 @@ public class PlayerInputHandler : MonoBehaviour {
 		Toolbox.FindComponent<GameStateHandler> ().EnableInputHandlers += TurnOn;
 		Toolbox.FindComponent<GameStateHandler> ().DisableInputHandlers += TurnOff;
 
-
 		currentBTOTarget = transform.parent.GetComponent<BaseTileObject> ();
 	}
 
@@ -44,7 +43,7 @@ public class PlayerInputHandler : MonoBehaviour {
 		
 
 	public void MoveInDirection(TileDirections currentDirection, int moveLimit){
-		Debug.Log ("I moved!");
+		Debug.Log ("I tried to move!");
 		for (int i = 0 ; i < queuedActions.Count ; i++){
 			if (queuedActions[i] as QueableSingleTargetMovement != null) {
 				moveCounts++;

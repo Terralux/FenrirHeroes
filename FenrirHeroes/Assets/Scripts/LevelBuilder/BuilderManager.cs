@@ -53,10 +53,10 @@ public class BuilderManager : LevelLoader {
 
 	public void RecolorTemplateTile(int x, int z){
 		if (currentLevel.tiles [x, floorIndex, z] != null) {
-			if (currentLevel.tiles [x, floorIndex, z].myStructure != null) {
-				templateTileObjects[x, z].GetComponent<MeshRenderer>().material.color = Color.red;
-			} else {
+			if(currentLevel.tiles [x, floorIndex, z].GetIsTilePassable()) {
 				templateTileObjects[x, z].GetComponent<MeshRenderer>().material.color = Color.green;
+			}else{
+				templateTileObjects[x, z].GetComponent<MeshRenderer>().material.color = Color.red;
 			}
 		} else {
 			templateTileObjects[x, z].GetComponent<MeshRenderer>().material.color = Color.white;
